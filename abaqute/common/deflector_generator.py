@@ -47,6 +47,14 @@ import_names=[
 	'MPI',
 	'MEDIAL_AXIS',
 	'HEX',
+	'AXISYM',
+	'AXISYMMETRIC',
+	'CYLINDRICAL',
+	'FINER',
+	'IMPRINT',
+	'ConnectorElasticity',
+	'NONLINEAR',
+	'ConnectorPlasticity',
 ]
 
 if __name__=='__main__':
