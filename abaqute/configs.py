@@ -1,1 +1,0 @@
-abaqus_executable_path=r'C:\SIMULIA\CAE\2019\win_b64\resources\install\cae\launcher.bat'
