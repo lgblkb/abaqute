@@ -124,7 +124,7 @@ class Modeller(object):
 		# Save by Madina on 2020_03_17-22.36.08; build 6.14-2 2014_08_22-20.00.46 134497
 
 		mdb.models['Model-1'].rootAssembly.regenerate()
-		mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF,
+		the_job=mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF,
 				explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF,
 				memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF,
 				multiprocessingMode=DEFAULT, name='Job-1', nodalOutputPrecision=SINGLE,
@@ -723,7 +723,7 @@ class Modeller(object):
 		mdb.models['Model-1'].materials['Material-1'].HeatGeneration()
 		mdb.models['Model-1'].materials['Material-1'].SpecificHeat(table=((940.0,),))
 		# Save by Madina on 2020_03_18-17.06.32; build 6.14-2 2014_08_22-20.00.46 134497
-
+		the_job.write_input()
 		return self
 
 def main():
