@@ -2,6 +2,7 @@ from __future__ import absolute_import
 import sys
 import os
 import subprocess
+from abaqute import configs
 
 project_dir=os.path.split(__file__)[0]
 abaqus_workdir=os.path.join(project_dir,'abaqus_workdir')
@@ -9,8 +10,9 @@ abaqus_workdir=os.path.join(project_dir,'abaqus_workdir')
 is_run_by_abaqus='ABQLMUSER' in os.environ
 
 def run_script(script_path):
-	cmd=r'C:\SIMULIA\CAE\2019\win_b64\resources\install\cae\launcher.bat cae -script {:} -- {:}'.format(
-		script_path,get_python_packages_path())
+	cmd=r'{cae_exec_path} cae -script {:} -- {:}'.format(
+		script_path,get_python_packages_path(),
+		cae_exec_path=configs.abaqus_executable_path)
 	print("Executing "+cmd)
 	subprocess.call(cmd.split(' '))
 
