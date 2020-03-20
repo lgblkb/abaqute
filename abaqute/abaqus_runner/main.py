@@ -1,26 +1,28 @@
+import pandas as pd
+import logging
 import time
 from pathlib import Path
 import os
 import subprocess
-from lgblkb_tools import Folder,logger
+# from lgblkb_tools import Folder,logger
 import numpy as np
-from lgblkb_tools.pathify import get_name
+# from lgblkb_tools.pathify import get_name
 from abaqute.abaqus_runner.modelling import Node,NodeSet,Model,Element
-from abaqute.abaqus_runner.py_curve import get_py_curve,get_gap
+from abaqute.abaqus_runner.py_curve import get_py_curve,get_stiffness
 
-# logger=logging.getLogger('abaqus_runner')
-# logger.setLevel(logging.DEBUG)
-# logger.addHandler(logging.StreamHandler())
+get_name=lambda some_path:os.path.splitext(os.path.basename(some_path))[0]
+logger=logging.getLogger('abaqus_runner')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
 
 project_dir=Path(__file__).parent
-project_folder=Folder(__file__)
-sim_folder=project_folder['sim_folder']
+sim_folder=project_dir.joinpath('sim_folder')
 abaqus_cmd='C:\Windows\SysWOW64\cmd.exe /k'
 
-def model_2():
+def gap_model(nodes_data):
 	model=Model()
 	
-	node1=Node([0,0])
+	node1=Node([0,0],)
 	node2=Node([5,0])
 	
 	elem1=Element(node1,node2)
@@ -33,10 +35,10 @@ def model_2():
 	model.add_nodeset(nodeset1)
 	model.add_nodeset(nodeset2)
 	
-	gap_values=get_py_curve(np.arange(-3000,3001,1000))[:1]
+	gap_values=get_py_curve(np.arange(-3000,3001,10))
 	model.add_element(elem1)
-	model.add_gap(-0.5)
-	model.add_py_curve(gap_values)
+	model.add_gap(-0.5,elem1)
+	# model.add_py_curve(gap_values)
 	model.add_friction(elastic_slip=2.54,myu=0.233)
 	model.add_boundary(nodeset1,1,1)
 	model.add_boundary(nodeset1,2,2)
@@ -97,7 +99,11 @@ def run_abaqus_job(sim_folder_,input_filepath):
 	pass
 
 def main():
-	model_2()
+	# gap_model()
+	df=pd.read_csv(project_dir.parent.joinpath('abaqus_workdir').joinpath('nodes_data.csv'),
+	               header=None,names=['node_id','x','y','z'])
+	nodes_data=df[df.x==500]
+	gap_model(nodes_data)
 	pass
 
 if __name__=='__main__':
